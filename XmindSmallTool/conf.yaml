@@ -1,0 +1,21 @@
+cases:
+  mark: 3
+  mark_2_string: tc
+  mark_3_key: cases
+  no_step_or_result_fill_by_case_title: false
+style:
+  font_size: 9
+sys:
+  encoding: utf-8
+template:
+  field:
+    category: 类型
+    module: 模块
+    preset: 前置
+    priority: 优先级
+    stage: 阶段
+    test_result: 预期
+    test_step: 步骤
+    test_title: 标题
+    point: 功能点
+    smoke: 冒烟
