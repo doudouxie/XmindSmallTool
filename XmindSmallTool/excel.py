@@ -76,11 +76,13 @@ class Excel2Xmind():
             if ws[row][3].value not in [None,'']:
                 case = ws[row][2].value+"$"+ws[row][1].value+"$"+ws[row][3].value
             else:
-                case = ws[row][2].value +"$"+ ws[row][1].value
+                case = ws[row][2].value+"$"+ws[row][1].value
                 #print(case)
 
-
-            pre_result = ws[row][6].value+"|"+"cases"+"|"+case
+            if ws[row][6].value in [None,'']:
+                pre_result = "cases" + "|" + case
+            else:
+                pre_result = ws[row][6].value+"|"+"cases"+"|"+case
 
             if '\n' in ws[row][4].value:
                 miaoshu = ws[row][4].value.split('\n')
