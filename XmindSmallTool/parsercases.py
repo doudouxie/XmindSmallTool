@@ -11,7 +11,6 @@ from config import ConfigParser
 
 
 class ParserCases:
-
     def __init__(self, path):
         self.msg = ''
         try:
@@ -72,7 +71,9 @@ class ParserCases:
             3. 使用英文单词区分用例及其步骤，cases 的所有子节点都是用例节点，如果没有cases节点则忽略
         :return:
         '''
-        priority = '' if not node.get('makers') else node.get('makers')[0][-1]
+        priority =''\
+            if not node.get('makers') else node.get('makers')[0][-1]
+        print(priority+'\n')
 
         if self.m == 1:
             pass
@@ -106,7 +107,7 @@ class ParserCases:
         child = node.get('topics')
         if p == module:
             p = ''
-        point = p + '$' + node.get('title') if p else node.get('title')
+        point = p + '|' + node.get('title') if p else node.get('title')
 
         if child:
             for n in child:
@@ -244,8 +245,8 @@ if __name__ == '__main__':
     from xmindparser import xmind_to_dict
     from pprint import pprint
 
-    d = xmind_to_dict('../test/test.xmind')
-    pprint(d)
+    d = xmind_to_dict('test.xmind')
+    #pprint(d)
 
-    p = ParserCases('../test/test.xmind')
-    pprint(p.all_map_case)
+    p = ParserCases('test.xmind')
+    #pprint(p.all_map_case)

@@ -83,9 +83,9 @@ class Case2Excel:
                 # function_name = test_case.get('登录')
 
                 row = new_sheet.max_row + 1
-                new_sheet.cell(row, field['module'], value=test_case['module'])
-                new_sheet.cell(row, field['priority'], value=test_case['priority'])
-                new_sheet.cell(row, field['point'], value=test_case['point'] or '')
+                #new_sheet.cell(row, field['module'], value=test_case['module'])
+                new_sheet.cell(row, field['priority'], value='P'+ test_case['priority'])
+                new_sheet.cell(row, field['point'], value=test_case['module']+'|'+ test_case['point'] or '')
                 new_sheet.cell(row, field['test_title'], value=test_case['test_title'])
                 new_sheet.cell(row, field['test_step'], value=test_case['test_steps'] or '')
                 new_sheet.cell(row, field['test_result'], value=test_case['test_results'] or '')

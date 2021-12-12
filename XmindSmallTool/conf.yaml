@@ -11,11 +11,11 @@ template:
   field:
     category: 类型
     module: 模块
-    preset: 前置
-    priority: 优先级
+    preset: 预置
+    priority: 级别
     stage: 阶段
     test_result: 预期
     test_step: 步骤
-    test_title: 标题
-    point: 功能点
+    test_title: 名称
+    point: 备注
     smoke: 冒烟
