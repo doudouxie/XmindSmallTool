@@ -74,17 +74,22 @@ while True:
                 sg.popup('您没有选择用例保存位置，将默认保存在xmind所在的文件夹!')
                 excel_result = os.path.splitext(xmind_file)[0] + '.xlsx'
                 event, value = window.Read()
-            xc = ParserCases(xmind_file)
+            try:
+                xc = ParserCases(xmind_file)
+            except Exception as e:
+                sg.popup('转化出现错误：\n' + str(e))
+
             if xc.msg:
                 sg.popup('选择的xmind格式有问题，请检查文件！')
                 event, value = window.Read()
-            ce = Case2Excel(template, excel_result)
-            # try:
-            #     ce.write_case_to_excel(xc.all_map_case)
-            # except Exception as e:
-            #     sg.popup('转化出现错误：\n' + str(e))
-            # else:
-            #     sg.popup('用例生成成功，请前往 {} 查看！'.format(excel_result))
+
+            try:
+                ce = Case2Excel(template, excel_result)
+                ce.write_case_to_excel(xc.all_map_case)
+            except Exception as e:
+                sg.popup('转化出现错误：\n' + str(e))
+            else:
+                sg.popup('用例生成成功，请前往 {} 查看！'.format(excel_result))
             ce.write_case_to_excel(xc.all_map_case)
 
         event, value = window.Read()
@@ -97,9 +102,9 @@ while True:
     # 由于选择xmind保存路径时可能会忘记输入后缀名，自动加上.xmind后缀
     if event == '_XMIND_RESULT_':
         case_file = value['_XMIND_RESULT_']
-        # if os.path.splitext(case_file)[-1] not in ['xmind']:
-        #     case_file = case_file + '.xmind'
-        #     window['_XMIND_RESULT_'].update(value=case_file)
+        if os.path.splitext(case_file)[-1] not in ['xmind']:
+            case_file = case_file + '.xmind'
+            window['_XMIND_RESULT_'].update(value=case_file)
         event, value = window.Read()
 
     # 当点击转化按钮时，获取文件路径，并调用核心代码进行转化
@@ -115,11 +120,10 @@ while True:
                 sg.popup('您没有选择脑图保存位置，将默认保存在excel所在的文件夹!')
                 case_file = os.path.splitext(xmind_file)[0] + '.xmind'
                 event, value = window.Read()
-            xc = Excel2Xmind()
-            dict_Data = xc.load_excel(xmind_file)
-            print(dict_Data)
 
             try:
+                xc = Excel2Xmind()
+                dict_Data = xc.load_excel(xmind_file)
                 xc.design_sheet(dict_Data,case_file)
             except Exception as e:
                 sg.popup('转化出现错误：\n' + str(e))

@@ -13,12 +13,10 @@ class Excel2Xmind():
         root_topic.setTitle('root node')
         self.dict_item(dicts,root_topic)
         xmind.save(workbook)
-        print(sheet.getData())
 
     def dict_item(self,dicts,topic):
         for key in dicts:
             split_result = key.split('$')
-            print(split_result,key)
             if len(split_result) == 1:
                 subtopic = topic.addSubTopic()
                 subtopic.setTitle(split_result[0])
@@ -26,7 +24,6 @@ class Excel2Xmind():
                 subtopic = topic.addSubTopic()
                 subtopic.setTitle(split_result[1])
                 self.priority_mark(split_result[0],subtopic)
-
             elif len(split_result) == 3:
                 subtopic = topic.addSubTopic()
                 subtopic.setTitle(split_result[1])
@@ -66,52 +63,58 @@ class Excel2Xmind():
 
         data = []
         for row in range(2,ws.max_row+1):
-            print(ws[row])
             if ws[row][4].value is None:
-                ws[row][4].value = 'Null'
-
-            if ws[row][5].value is None:
-                ws[row][5].value = 'Null'
+                raise RuntimeError('某个用例缺少测试步骤哦！')
 
             if ws[row][3].value not in [None,'']:
                 case = ws[row][2].value+"$"+ws[row][1].value+"$"+ws[row][3].value
             else:
                 case = ws[row][2].value+"$"+ws[row][1].value
-                #print(case)
 
             if ws[row][6].value in [None,'']:
                 pre_result = "cases" + "|" + case
             else:
                 pre_result = ws[row][6].value+"|"+"cases"+"|"+case
 
-            if '\n' in ws[row][4].value:
+            if ws[row][5].value != None:
                 miaoshu = ws[row][4].value.split('\n')
                 jieguo = ws[row][5].value.split('\n')
+
+                if len(miaoshu) < len(jieguo):
+                    raise RuntimeError('有用例结果比步骤还多哦！')
+
                 for i in range(len(miaoshu)):
                     if i<len(jieguo):
                         miaoshu[i] = re.sub('^\d*\.','',miaoshu[i])
                         jieguo[i] = re.sub('^\d*\.','',jieguo[i])
                         result = (pre_result+"|"+miaoshu[i]+"|"+jieguo[i])
-
                     else:
-                        miaoshu[i] = re.sub('^\d*\.', '', miaoshu[i])
-                        result = (pre_result + "|" + miaoshu[i])
+                        miaoshu[i] = re.sub('^\d*\.', '',miaoshu[i])
+                        result = (pre_result+"|"+miaoshu[i]+"|"+'')
+
                     after = result.split("|")
                     final = self.list2dict(after)
                     data.append(final)
+                    print(data)
                 #after = result.split("$")
                 #print(hehe(after)
                 # data.append(hehe(after))
             else:
-                ws[row][4].value = re.sub('^\d*\.','',ws[row][4].value)
-                ws[row][5].value = re.sub('^\d*\.', '', ws[row][5].value)
-                result= pre_result+"|"+ws[row][4].value+"|"+ws[row][5].value
-                after = result.split("|")
-                # print(hehe(after))
-                # data.append(hehe(after))
-                final = self.list2dict(after)
-                #print(final)
-                data.append(final)
+                miaoshu = ws[row][4].value.split('\n')
+                for i in range(len(miaoshu)):
+                    miaoshu[i] = re.sub('^\d*\.', '', miaoshu[i])
+                    result = (pre_result + "|" + miaoshu[i])
+                    after = result.split("|")
+                    final = self.list2dict(after)
+                    data.append(final)
+                # ws[row][4].value = re.sub('^\d*\.','',ws[row][4].value)
+                # ws[row][5].value = re.sub('^\d*\.', '', ws[row][5].value)
+                # result= pre_result+"|"+ws[row][4].value+"|"+ws[row][5].value
+                # after = result.split("|")
+                # final = self.list2dict(after)
+                # data.append(final)
+            #print(data)
+
         result = self.combine_dict(data)
         return result
 
@@ -145,7 +148,7 @@ class Excel2Xmind():
 if __name__ == '__main__':
     final = Excel2Xmind()
     finaldata = final.load_excel('test.xlsx')
-    Excel2Xmind.design_sheet(finaldata,'1.xmind')
+    final.design_sheet(finaldata,'test.xmind')
 
 
 
