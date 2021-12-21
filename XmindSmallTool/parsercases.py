@@ -224,6 +224,8 @@ class ParserCases:
                 # 预期结果
                 if results:
                     for result in results:
+                        if result['title'] is None:
+                            result['title'] = ''
                         result = result['title'].splitlines()
                         test_results += result
             test_results = '\n'.join(['{}. {}'.format(i + 1, r) for i, r in enumerate(test_results)])

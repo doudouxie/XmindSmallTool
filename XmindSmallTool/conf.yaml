@@ -17,5 +17,5 @@ template:
     test_result: 预期
     test_step: 步骤
     test_title: 名称
-    point: 备注
+    point: 标签
     smoke: 冒烟

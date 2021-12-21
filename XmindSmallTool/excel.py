@@ -63,50 +63,51 @@ class Excel2Xmind():
 
         data = []
         for row in range(2,ws.max_row+1):
-            if ws[row][4].value is None:
-                raise RuntimeError('某个用例缺少测试步骤哦！')
-
             if ws[row][3].value not in [None,'']:
                 case = ws[row][2].value+"$"+ws[row][1].value+"$"+ws[row][3].value
             else:
                 case = ws[row][2].value+"$"+ws[row][1].value
 
-            if ws[row][6].value in [None,'']:
+            if ws[row][7].value in [None,'']:
                 pre_result = "cases" + "|" + case
             else:
-                pre_result = ws[row][6].value+"|"+"cases"+"|"+case
+                pre_result = ws[row][7].value+"|"+"cases"+"|"+case
 
-            if ws[row][5].value != None:
-                miaoshu = ws[row][4].value.split('\n')
-                jieguo = ws[row][5].value.split('\n')
+            if ws[row][4].value is None:
+                raise RuntimeError(pre_result+'——这个用例缺少测试步骤哦！')
+            if ws[row][5].value is None:
+                ws[row][5].value = ''
 
-                if len(miaoshu) < len(jieguo):
-                    raise RuntimeError('有用例结果比步骤还多哦！')
+            miaoshu = str(ws[row][4].value).split('\n')
+            jieguo = str(ws[row][5].value).split('\n')
 
-                for i in range(len(miaoshu)):
-                    if i<len(jieguo):
-                        miaoshu[i] = re.sub('^\d*\.','',miaoshu[i])
-                        jieguo[i] = re.sub('^\d*\.','',jieguo[i])
-                        result = (pre_result+"|"+miaoshu[i]+"|"+jieguo[i])
-                    else:
-                        miaoshu[i] = re.sub('^\d*\.', '',miaoshu[i])
-                        result = (pre_result+"|"+miaoshu[i]+"|"+'')
+            if len(miaoshu) < len(jieguo):
+                raise RuntimeError(pre_result+'——这个用例结果比步骤还多哦！')
 
-                    after = result.split("|")
-                    final = self.list2dict(after)
-                    data.append(final)
-                    print(data)
-                #after = result.split("$")
-                #print(hehe(after)
-                # data.append(hehe(after))
-            else:
-                miaoshu = ws[row][4].value.split('\n')
-                for i in range(len(miaoshu)):
-                    miaoshu[i] = re.sub('^\d*\.', '', miaoshu[i])
-                    result = (pre_result + "|" + miaoshu[i])
-                    after = result.split("|")
-                    final = self.list2dict(after)
-                    data.append(final)
+            for i in range(len(miaoshu)):
+                if i<len(jieguo):
+                    miaoshu[i] = re.sub('^\d*\.','',miaoshu[i])
+                    jieguo[i] = re.sub('^\d*\.','',jieguo[i])
+                    result = (pre_result+"|"+miaoshu[i]+"|"+jieguo[i])
+                else:
+                    miaoshu[i] = re.sub('^\d*\.', '',miaoshu[i])
+                    result = (pre_result+"|"+miaoshu[i]+"|"+'')
+
+                after = result.split("|")
+                final = self.list2dict(after)
+                data.append(final)
+                print(data)
+            #after = result.split("$")
+            #print(hehe(after)
+            # data.append(hehe(after))
+        # else:
+        #     miaoshu = ws[row][4].value.split('\n')
+        #     for i in range(len(miaoshu)):
+        #         miaoshu[i] = re.sub('^\d*\.', '', miaoshu[i])
+        #         result = (pre_result + "|" + miaoshu[i])
+        #         after = result.split("|")
+        #         final = self.list2dict(after)
+        #         data.append(final)
                 # ws[row][4].value = re.sub('^\d*\.','',ws[row][4].value)
                 # ws[row][5].value = re.sub('^\d*\.', '', ws[row][5].value)
                 # result= pre_result+"|"+ws[row][4].value+"|"+ws[row][5].value
