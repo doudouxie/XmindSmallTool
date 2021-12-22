@@ -68,10 +68,10 @@ class Excel2Xmind():
             else:
                 case = ws[row][2].value+"$"+ws[row][1].value
 
-            if ws[row][7].value in [None,'']:
+            if ws[row][8].value in [None,'']:
                 pre_result = "cases" + "|" + case
             else:
-                pre_result = ws[row][7].value+"|"+"cases"+"|"+case
+                pre_result = ws[row][8].value+"|"+"cases"+"|"+case
 
             if ws[row][4].value is None:
                 raise RuntimeError(pre_result+'——这个用例缺少测试步骤哦！')
